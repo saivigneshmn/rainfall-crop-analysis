@@ -5,6 +5,44 @@ Version: 2025-01 - Production Ready
 """
 import sys
 import os
+
+# Validate all required dependencies before importing modules
+# Note: streamlit and matplotlib are not checked here as they're frontend-only
+REQUIRED_DEPENDENCIES = {
+    'numpy': 'numpy',
+    'pandas': 'pandas',
+    'scipy.stats': 'scipy',
+    'netCDF4': 'netCDF4',
+    'bs4': 'beautifulsoup4',
+    'lxml': 'lxml',
+    'openpyxl': 'openpyxl'
+}
+
+MISSING_DEPS = []
+for module_name, pip_name in REQUIRED_DEPENDENCIES.items():
+    try:
+        __import__(module_name)
+    except ImportError:
+        MISSING_DEPS.append(f"{pip_name} (for {module_name})")
+
+if MISSING_DEPS:
+    error_msg = "\n".join([
+        "=" * 80,
+        "❌ MISSING REQUIRED DEPENDENCIES",
+        "=" * 80,
+        "",
+        "Please install the following packages:",
+        "",
+        f"pip install {' '.join([dep.split(' (')[0] for dep in MISSING_DEPS])}",
+        "",
+        "Missing packages:",
+        *[f"  - {dep}" for dep in MISSING_DEPS],
+        "",
+        "=" * 80
+    ])
+    print(error_msg)
+    raise ImportError(f"Missing dependencies: {', '.join([dep.split(' (')[0] for dep in MISSING_DEPS])}")
+
 from data_loader import RainfallLoader, CropDataLoader
 from data_harmonization import StateDistrictMapper, TemporalHarmonizer
 from query_engine import QueryEngine

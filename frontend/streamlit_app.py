@@ -5,14 +5,60 @@ Intelligent Q&A System for Government Agricultural & Climate Data
 
 from __future__ import annotations
 from typing import Any
+import sys
+import os
 
+# Import streamlit first
 import streamlit as st  # type: ignore
+
+# Dependency check - verify all required packages are installed
+def check_dependencies():
+    """Check that all required dependencies are installed"""
+    required = {
+        'pandas': 'pandas',
+        'numpy': 'numpy',
+        'matplotlib': 'matplotlib',
+        'seaborn': 'seaborn',
+        'scipy': 'scipy',
+        'netCDF4': 'netCDF4',
+        'bs4': 'beautifulsoup4',
+        'lxml': 'lxml',
+        'openpyxl': 'openpyxl'
+    }
+    
+    missing = []
+    for module_name, pip_name in required.items():
+        try:
+            __import__(module_name)
+        except ImportError:
+            missing.append(f"{pip_name} (as {module_name})")
+    
+    if missing:
+        st.error("""
+        ### ❌ Missing Required Dependencies
+        
+        The following packages need to be installed:
+        
+        ```bash
+        pip install {}
+        ```
+        
+        Missing packages:
+        - {}
+        
+        Please install them and restart the app.
+        """.format(' '.join([pkg.split(' (')[0] for pkg in missing]), '\n- '.join(missing)))
+        st.stop()
+        return False
+    return True
+
+# Run dependency check
+check_dependencies()
+
 import pandas as pd  # type: ignore
 import numpy as np  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 import seaborn as sns  # type: ignore
-import sys
-import os
 
 # Add backend to path
 backend_path = os.path.join(os.path.dirname(__file__), '..', 'backend')
