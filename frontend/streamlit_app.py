@@ -1024,6 +1024,7 @@ def _display_result(result: dict[str, Any], part_name: str | None = None) -> Non
 
 def show_data_overview(analyzer: RainfallCropAnalyzer) -> None:
     st.header("📊 Data Overview")
+    st.markdown("*Data sources: India Meteorological Department (IMD) & Ministry of Agriculture & Farmers Welfare*")
     
     col1, col2 = st.columns(2)
     
