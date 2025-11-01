@@ -18,6 +18,12 @@ class NLQueryParser:
         
         # Patterns for different question types
         self.patterns = {
+            'single_rainfall': [
+                r'what.*is.*average.*annual.*rainfall.*in\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)',
+                r'what.*is.*average.*rainfall.*in\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)',
+                r'average.*annual.*rainfall.*in\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)',
+                r'average.*rainfall.*in\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)',
+            ],
             'compare_rainfall': [
                 r'compare.*average.*annual.*rainfall.*in\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+and\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)',
                 r'compare.*rainfall.*in\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)\s+and\s+([A-Za-z]+(?:\s+[A-Za-z]+)*)',
@@ -86,6 +92,28 @@ class NLQueryParser:
             'function_suggestion': None,
             'error': None
         }
+        
+        # Check for single state rainfall queries (before comparison)
+        for pattern in self.patterns['single_rainfall']:
+            match = re.search(pattern, question_original, re.IGNORECASE)
+            if match:
+                state = match.group(1).strip()
+                # Clean up - remove common trailing words
+                words = state.split()
+                while words and words[-1].lower() in ['the', 'for', 'in', 'of', 'and', 'most', 'recent', 'year', 'available', 'last', 'available']:
+                    words = words[:-1]
+                state_clean = ' '.join(words) if words else state
+                
+                result.update({
+                    'parsed': True,
+                    'query_type': 'single_rainfall',
+                    'parameters': {
+                        'state_name': state_clean,
+                        'years': years
+                    },
+                    'function_suggestion': f"query_engine.get_avg_rainfall('{state_clean}', years={years})"
+                })
+                return result
         
         # Check for rainfall comparison
         # Use original question for better state name preservation
@@ -500,7 +528,12 @@ class NLQueryParser:
             query_type = parsed['query_type']
             params = parsed['parameters']
             
-            if query_type == 'compare_rainfall':
+            if query_type == 'single_rainfall':
+                result = self.query_engine.get_avg_rainfall(
+                    params['state_name'],
+                    params.get('years')
+                )
+            elif query_type == 'compare_rainfall':
                 result = self.query_engine.compare_rainfall(
                     params['state_names'],
                     params.get('years')
