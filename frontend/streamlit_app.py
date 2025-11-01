@@ -1,6 +1,7 @@
 """
 Project Samarth - Build for Bharat
 Intelligent Q&A System for Government Agricultural & Climate Data
+Version: 2025-01 - Updated Title & Branding
 """
 
 from __future__ import annotations
@@ -68,11 +69,12 @@ if backend_path not in sys.path:
 from main import RainfallCropAnalyzer, format_query_result  # type: ignore
 from nl_query_parser import NLQueryParser  # type: ignore
 
-# Page config
+# Page config - Updated branding for Project Samarth
 st.set_page_config(
     page_title="Project Samarth - Build for Bharat",
     page_icon="🇮🇳",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # Initialize session state
