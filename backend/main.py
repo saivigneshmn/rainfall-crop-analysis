@@ -4,6 +4,7 @@ from data_loader import RainfallLoader, CropDataLoader
 from data_harmonization import StateDistrictMapper, TemporalHarmonizer
 from query_engine import QueryEngine
 import pandas as pd
+import tabulate  # Required for pandas.to_markdown()
 
 
 class RainfallCropAnalyzer:
