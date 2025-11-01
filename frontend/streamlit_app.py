@@ -13,7 +13,11 @@ import matplotlib.pyplot as plt  # type: ignore
 import seaborn as sns  # type: ignore
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
+
+# Add backend to path
+backend_path = os.path.join(os.path.dirname(__file__), '..', 'backend')
+if backend_path not in sys.path:
+    sys.path.insert(0, backend_path)
 
 from main import RainfallCropAnalyzer, format_query_result  # type: ignore
 from nl_query_parser import NLQueryParser  # type: ignore
