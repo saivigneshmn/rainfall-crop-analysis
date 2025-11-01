@@ -1,84 +1,106 @@
-## Summary
-Successfully fixed the pandas `sort_values()` deprecation error and created a demonstration script that shows **3 successful queries and 2 failing queries** for your Loom video.
+# 🌾 Rainfall & Crop Production Analysis System
 
-After analyzing the data, I discovered the system supports **33 crops across 24 states**. The best crops for queries are those with widest state coverage.
+A comprehensive Natural Language Q&A system for analyzing Indian rainfall data and crop production statistics with data-backed insights.
 
-## Issue Fixed
-**Error**: `sort_values() got an unexpected keyword argument 'na_last'`
+## 🚀 Features
 
-**Location**: `query_engine.py` line 351
+- **Natural Language Queries**: Ask questions in plain English
+- **Multi-part Query Processing**: Combine rainfall comparisons with crop rankings
+- **Cross-state Analysis**: Compare districts across different states
+- **Trend Analysis**: Analyze production trends with climate correlation
+- **Policy Support**: Generate data-backed arguments for agricultural policies
+- **32+ Example Questions**: Pre-built queries covering all use cases
 
-**Fix**: Changed `na_last=True` to `na_position='last'` (pandas API update)
+## 📁 Project Structure
 
-## Demo Script
-Run `final_demo.py` to see the demonstration:
-
-```bash
-python final_demo.py
+```
+├── backend/          # Core analysis engine
+│   ├── data_loader.py
+│   ├── data_harmonization.py
+│   ├── query_engine.py
+│   ├── nl_query_parser.py
+│   └── main.py
+├── frontend/         # Streamlit web interface
+│   └── streamlit_app.py
+├── data/             # Dataset files (~50 MB)
+│   ├── RF25_ind2022_rfp25.nc
+│   └── horizontal_crop_vertical_year_report.xls
+├── requirements.txt
+└── README.md
 ```
 
-## Query Results
+## 🛠️ Installation
 
-### ✅ 3 Successful Queries
+```bash
+# Clone repository
+git clone https://github.com/saivigneshmn/rainfall-crop-analysis.git
+cd rainfall-crop-analysis
 
-1. **Cross-state Sugarcane Comparison**
-   - Query: "Identify the district in Maharashtra with the highest production of Sugarcane and compare that with the district with the lowest production of Sugarcane in Karnataka"
-   - Result: Solapur, Maharashtra - 20,058,060 tonnes
+# Install dependencies
+pip install -r requirements.txt
+```
 
-2. **Cross-state Coconut Comparison**
-   - Query: "Identify the district in Tamil Nadu with the highest production of Coconut and compare that with the district with the lowest production of Coconut in Kerala"
-   - Results:
-     - Highest: Coimbatore, Tamil Nadu - 1,425,200,000 tonnes
-     - Lowest: Idukki, Kerala - 50,000,000 tonnes
+## ▶️ Usage
 
-3. **Cross-state Ginger Comparison**
-   - Query: "Identify the district in Karnataka with the highest production of Ginger and compare that with the district with the lowest production of Ginger in Assam"
-   - Results:
-     - Highest: Hassan, Karnataka - 82,925 tonnes
-     - Lowest: South salmara mancachar, Assam - 198 tonnes
+### Local Development
+```bash
+streamlit run frontend/streamlit_app.py
+```
 
-### ❌ 2 Failed Queries
+### Web Deployment
+**Live App**: [Deploy on Streamlit Cloud](https://share.streamlit.io/)
 
-4. **Banana in Punjab**
-   - Query: "Identify the district in Punjab with the highest production of Banana"
-   - Result: FAILED - No production data found (Banana is not produced in Punjab)
+1. Go to https://share.streamlit.io/
+2. Connect your GitHub repository
+3. Set main file: `frontend/streamlit_app.py`
+4. Deploy!
 
-5. **Rice in Punjab**
-   - Query: "Identify the district in Punjab with the highest production of Rice"
-   - Result: FAILED - No production data found (Rice is not in the dataset)
+**Note**: For Streamlit Cloud, update the main file path to: `frontend/streamlit_app.py`
 
-## Why These Queries Were Chosen
+## 📊 Dataset
 
-- **Working queries**: Based on data analysis, these crops have the widest state coverage:
-  - **Sugarcane**: Produced in 21 states! (Best choice)
-  - **Coconut**: Produced in 8 states
-  - **Ginger**: Produced in 9 states
-  
-- **Failing queries**: Demonstrate proper error handling:
-  - Banana not produced in Punjab (only 7 states)
-  - Rice not in dataset at all
-
-## For Your Video
-This demonstration shows:
-1. Complex cross-state district comparisons work correctly
-2. The system handles missing data gracefully
-3. Clear error messages for failed queries
-4. Production data is properly displayed with citations
-
-## Dataset Summary
 - **33 crops** across **24 states**
 - **473 districts** with production data
 - **Years**: 2022, 2023
-- **Rainfall data**: 2022 only
+- **Rainfall data**: 2022 (NetCDF format)
+- **Crop data**: 2022-2023 (Excel format)
 
-**Best crops for queries** (by state coverage):
-1. Sugarcane - 21 states
-2. Coconut - 8 states  
-3. Ginger - 9 states
-4. Turmeric - 9 states
-5. Tobacco - 8 states
+## 💬 Example Queries
 
-## Files Modified
-- `query_engine.py`: Fixed `na_last` → `na_position` deprecation error
-- `final_demo.py`: Created demonstration script (new file)
+- **Rainfall Comparison**: "Compare average annual rainfall in Tamil Nadu and Karnataka"
+- **Top Crops**: "List the top 10 most produced crops in Maharashtra"
+- **District Analysis**: "Identify the district with highest Sugarcane production in Tamil Nadu"
+- **Trend Analysis**: "Analyze the production trend of Banana in Karnataka"
+- **Policy Support**: "What are three data-backed arguments to promote Sugarcane over Banana in Tamil Nadu?"
 
+## 🔧 Tech Stack
+
+- **Frontend**: Streamlit
+- **Backend**: Python (Pandas, NumPy, SciPy)
+- **Data Processing**: NetCDF4, XArray
+- **Natural Language**: Regex-based query parsing
+- **Visualization**: Matplotlib, Seaborn
+
+## 📝 Key Capabilities
+
+✅ Multi-part query processing  
+✅ Cross-state district comparisons  
+✅ Production trend analysis  
+✅ Rainfall-production correlation  
+✅ Data-backed policy arguments  
+✅ Citation management  
+✅ Error handling for missing data  
+
+## 🌐 Links
+
+- **Live Demo**: [Streamlit Cloud](https://rainfall-crop-analysis.streamlit.app)
+- **Repository**: [GitHub](https://github.com/saivigneshmn/rainfall-crop-analysis)
+- **Video Demo**: [Loom](https://www.loom.com/share/81f5b965662e49a1a0ed0779d4ca0d0c)
+
+## 📄 License
+
+MIT License
+
+---
+
+Built with ❤️ for agricultural data analysis
