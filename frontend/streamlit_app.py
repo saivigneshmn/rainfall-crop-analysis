@@ -69,12 +69,18 @@ if backend_path not in sys.path:
 from main import RainfallCropAnalyzer, format_query_result  # type: ignore
 from nl_query_parser import NLQueryParser  # type: ignore
 
-# Page config - Updated branding for Project Samarth
+# Page config - Project Samarth - Build for Bharat
+# This ensures the browser tab shows the correct title
 st.set_page_config(
     page_title="Project Samarth - Build for Bharat",
     page_icon="🇮🇳",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': "# 🇮🇳 Project Samarth\n\n## Build for Bharat\n\nIntelligent Q&A System for Government Agricultural & Climate Data"
+    }
 )
 
 # Initialize session state
@@ -110,10 +116,14 @@ def load_data() -> bool:
 
 
 def main() -> None:
+    # Project Samarth - Build for Bharat
+    # Updated: 2025-01 - Branding refresh
     st.title("🇮🇳 Project Samarth")
     st.markdown("### Build for Bharat")
     st.markdown("*Intelligent Q&A System for Government Agricultural & Climate Data*")
     st.markdown("---")
+    # Version indicator (helps verify deployment)
+    st.caption("Version 2025.01 - Project Samarth | Build for Bharat")
     
     # Sidebar for navigation
     st.sidebar.title("Navigation")
