@@ -7,16 +7,16 @@ from __future__ import annotations
 from typing import Any
 
 import streamlit as st  # type: ignore
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+import pandas as pd  # type: ignore
+import numpy as np  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
+import seaborn as sns  # type: ignore
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
-from main import RainfallCropAnalyzer, format_query_result
-from nl_query_parser import NLQueryParser
+from main import RainfallCropAnalyzer, format_query_result  # type: ignore
+from nl_query_parser import NLQueryParser  # type: ignore
 
 # Page config
 st.set_page_config(
