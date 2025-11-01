@@ -1,5 +1,6 @@
 """
-Streamlit Web UI for Rainfall and Crop Production Analysis
+Project Samarth - Build for Bharat
+Intelligent Q&A System for Government Agricultural & Climate Data
 """
 
 from __future__ import annotations
@@ -19,8 +20,8 @@ from nl_query_parser import NLQueryParser
 
 # Page config
 st.set_page_config(
-    page_title="Rainfall & Crop Analysis",
-    page_icon="🌾",
+    page_title="Project Samarth - Build for Bharat",
+    page_icon="🇮🇳",
     layout="wide"
 )
 
@@ -57,8 +58,10 @@ def load_data() -> bool:
 
 
 def main() -> None:
-    st.title("🌾 Rainfall & Crop Production Analysis System")
-    st.markdown("Analyze Indian rainfall data and crop production statistics with data-backed insights")
+    st.title("🇮🇳 Project Samarth")
+    st.markdown("### Build for Bharat")
+    st.markdown("*Intelligent Q&A System for Government Agricultural & Climate Data*")
+    st.markdown("---")
     
     # Sidebar for navigation
     st.sidebar.title("Navigation")
@@ -269,8 +272,8 @@ def show_nl_qa(analyzer: RainfallCropAnalyzer) -> None:
     <div class="main-header">
         <h1 style="margin: 0; color: white;">💬 Natural Language Q&A</h1>
         <p style="margin: 0.5rem 0 0 0; color: rgba(255,255,255,0.9);">
-            Ask questions in natural language about rainfall and crop production data<br>
-            <small style="font-size: 0.9em; opacity: 0.95;">Try the challenge questions below or ask your own</small>
+            Ask questions in natural language about government agricultural & climate data<br>
+            <small style="font-size: 0.9em; opacity: 0.95;">Project Samarth Challenge Questions - Cross-domain insights from data.gov.in</small>
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -332,8 +335,8 @@ def show_nl_qa(analyzer: RainfallCropAnalyzer) -> None:
                     """, unsafe_allow_html=True)
     
     # Example questions as clickable cards
-    st.markdown("### 💡 Example Questions")
-    st.markdown("Click on any example to try it:")
+    st.markdown("### 💡 Challenge Questions & Examples")
+    st.markdown("**Project Samarth Challenge Questions** - Click on any example to try:")
     
     # Comprehensive list of example questions covering all query types
     examples = [
@@ -524,7 +527,7 @@ def show_nl_qa(analyzer: RainfallCropAnalyzer) -> None:
     ]
     
     # Display examples with categories
-    st.markdown("#### 🎯 Challenge Questions")
+    st.markdown("#### 🎯 Project Samarth Challenge Questions")
     challenge_examples = [e for e in examples if "Challenge Question" in e["category"]]
     cols1 = st.columns(2)
     for idx, example in enumerate(challenge_examples):
