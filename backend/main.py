@@ -4,7 +4,13 @@ from data_loader import RainfallLoader, CropDataLoader
 from data_harmonization import StateDistrictMapper, TemporalHarmonizer
 from query_engine import QueryEngine
 import pandas as pd
-import tabulate  # type: ignore  # Required for pandas.to_markdown()
+
+# Try importing tabulate for pandas.to_markdown() support
+try:
+    import tabulate  # type: ignore
+    HAS_TABULATE = True
+except ImportError:
+    HAS_TABULATE = False
 
 
 class RainfallCropAnalyzer:
@@ -74,6 +80,34 @@ class RainfallCropAnalyzer:
         self.close()
 
 
+def dataframe_to_markdown(df: pd.DataFrame, index: bool = False) -> str:
+    """Convert DataFrame to markdown table with fallback if tabulate is not available"""
+    if HAS_TABULATE:
+        try:
+            result = df.to_markdown(index=index)
+            if result:
+                return result
+        except Exception:
+            pass
+    
+    # Fallback: simple markdown table
+    lines = []
+    # Header
+    cols = df.columns.tolist()
+    if index:
+        cols = [''] + cols
+    lines.append('| ' + ' | '.join(cols) + ' |')
+    # Separator
+    lines.append('| ' + ' | '.join(['---'] * len(cols)) + ' |')
+    # Rows
+    for idx, row in df.iterrows():
+        values = [str(v) for v in row.values]
+        if index:
+            values = [str(idx)] + values
+        lines.append('| ' + ' | '.join(values) + ' |')
+    return '\n'.join(lines)
+
+
 def format_query_result(result: dict) -> str:
     """Format query result as markdown"""
     if 'error' in result:
@@ -84,18 +118,18 @@ def format_query_result(result: dict) -> str:
     # Add title/header based on query type
     if 'comparison' in result:
         output.append("## Rainfall Comparison\n")
-        output.append(result['comparison'].to_markdown(index=False))
+        output.append(dataframe_to_markdown(result['comparison'], index=False))
         output.append(f"\n*Years: {result.get('years', 'N/A')}*\n")
     elif 'top_crops' in result:
         output.append(f"## Top {result.get('top_n', 10)} Crops in {result.get('state', 'N/A')}\n")
-        output.append(result['top_crops'].to_markdown())
+        output.append(dataframe_to_markdown(result['top_crops']))
         output.append(f"\n*Years: {result.get('years', 'N/A')}*\n")
     elif 'districts' in result:
         output.append(f"## Crop Production by District\n")
         output.append(f"**Crop:** {result.get('crop', 'N/A')}\n")
         output.append(f"**State:** {result.get('state', 'N/A')}\n")
         output.append(f"**Year:** {result.get('year', 'N/A')}\n\n")
-        output.append(result['districts'].to_markdown(index=False))
+        output.append(dataframe_to_markdown(result['districts'], index=False))
     elif 'trend_analysis' in result:
         output.append(f"## Crop Production Trend Analysis\n")
         output.append(f"**Crop:** {result.get('crop', 'N/A')}\n")
@@ -107,7 +141,7 @@ def format_query_result(result: dict) -> str:
             output.append(f"**R-squared:** {trend.get('r_squared', 0):.4f}\n")
             output.append(f"**P-value:** {trend.get('p_value', 0):.4f}\n\n")
             output.append("**Yearly Production Data:**\n")
-            output.append(trend['yearly_data'].to_markdown(index=False))
+            output.append(dataframe_to_markdown(trend['yearly_data'], index=False))
         else:
             output.append(f"**Error:** {trend.get('error', 'Unknown error')}\n")
     elif 'correlation' in result:
@@ -117,7 +151,7 @@ def format_query_result(result: dict) -> str:
         corr = result['correlation']
         output.append(f"**Average Rainfall:** {corr.get('average_rainfall_mm', 0):.2f} mm\n\n")
         output.append("**Production Data:**\n")
-        output.append(corr['production_data'].to_markdown(index=False))
+        output.append(dataframe_to_markdown(corr['production_data'], index=False))
         if 'note' in corr:
             output.append(f"\n*Note: {corr['note']}*\n")
     elif 'arguments' in result:
@@ -130,7 +164,7 @@ def format_query_result(result: dict) -> str:
             output.append(f"   - {arg['data']}\n")
             output.append(f"   - Metric: {arg['metric']}\n\n")
         output.append("### Comparison Table:\n")
-        output.append(result['comparison'].to_markdown(index=False))
+        output.append(dataframe_to_markdown(result['comparison'], index=False))
         if 'note' in result:
             output.append(f"\n*{result['note']}*\n")
     elif 'average_rainfall' in result:
@@ -147,7 +181,7 @@ def format_query_result(result: dict) -> str:
         highest = result.get('highest_district', {})
         if 'districts' in highest and isinstance(highest['districts'], pd.DataFrame) and len(highest['districts']) > 0:
             output.append(f"### Highest Production District in {result.get('highest_state', 'N/A')}\n")
-            output.append(highest['districts'].to_markdown(index=False))
+            output.append(dataframe_to_markdown(highest['districts'], index=False))
         elif 'error' in highest:
             output.append(f"### Highest Production District\n**Error:** {highest['error']}\n")
         
@@ -157,7 +191,7 @@ def format_query_result(result: dict) -> str:
         lowest = result.get('lowest_district', {})
         if 'districts' in lowest and isinstance(lowest['districts'], pd.DataFrame) and len(lowest['districts']) > 0:
             output.append(f"### Lowest Production District in {result.get('lowest_state', 'N/A')}\n")
-            output.append(lowest['districts'].to_markdown(index=False))
+            output.append(dataframe_to_markdown(lowest['districts'], index=False))
         elif 'error' in lowest:
             output.append(f"### Lowest Production District\n**Error:** {lowest['error']}\n")
     
