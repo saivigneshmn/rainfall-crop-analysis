@@ -1,3 +1,8 @@
+"""
+Project Samarth - Build for Bharat
+Zero-dependency markdown table formatting (no tabulate required)
+Version: 2025-01 - Production Ready
+"""
 import sys
 import os
 from data_loader import RainfallLoader, CropDataLoader
