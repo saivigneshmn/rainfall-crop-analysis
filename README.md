@@ -55,6 +55,8 @@ streamlit run frontend/streamlit_app.py
 3. Set main file: `frontend/streamlit_app.py`
 4. Deploy!
 
+**Note**: For Streamlit Cloud, update the main file path to: `frontend/streamlit_app.py`
+
 ## 📊 Dataset
 
 - **33 crops** across **24 states**
