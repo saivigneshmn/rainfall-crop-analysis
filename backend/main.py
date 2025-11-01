@@ -5,13 +5,6 @@ from data_harmonization import StateDistrictMapper, TemporalHarmonizer
 from query_engine import QueryEngine
 import pandas as pd
 
-# Try importing tabulate for pandas.to_markdown() support
-try:
-    import tabulate  # type: ignore
-    HAS_TABULATE = True
-except ImportError:
-    HAS_TABULATE = False
-
 
 class RainfallCropAnalyzer:
     """Main analyzer class that orchestrates all components"""
@@ -82,14 +75,7 @@ class RainfallCropAnalyzer:
 
 def dataframe_to_markdown(df: pd.DataFrame, index: bool = False) -> str:
     """Convert DataFrame to markdown table with fallback if tabulate is not available"""
-    if HAS_TABULATE:
-        try:
-            result = df.to_markdown(index=index)
-            if result:
-                return result
-        except Exception:
-            pass
-    
+    # Always use simple fallback for now since tabulate detection is unreliable
     # Fallback: simple markdown table
     lines = []
     # Header
