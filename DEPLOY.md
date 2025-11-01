@@ -20,7 +20,7 @@
 3. **Click**: "New app"
 4. **Fill in**:
    - Repository: `saivigneshmn/rainfall-crop-analysis`
-   - Branch: `main`
+   - **Branch: `main`** ⚠️ **CRITICAL**: Make sure it's `main`, NOT `master`!
    - Main file path: `frontend/streamlit_app.py`
 5. **Click**: "Advanced settings" and configure:
    - **Python version**: Select `3.11` (recommended for netCDF4, scipy compatibility)
@@ -39,10 +39,15 @@ https://rainfall-crop-analysis.streamlit.app
 
 ## Troubleshooting
 
-- **If "frontend/streamlit_app.py not found"**: Check branch is `main`
-- **If deployment fails**: Check Streamlit Cloud logs
+- **If seeing old content/not updating**: ⚠️ **Check the branch!** Make sure Streamlit Cloud is set to deploy from `main` branch, NOT `master` or any other branch. Go to app settings → Edit → Change branch to `main` → Save.
+- **If "frontend/streamlit_app.py not found"**: Check branch is `main` (not `master`)
+- **If deployment fails**: Check Streamlit Cloud logs for error messages
 - **If data doesn't load**: Wait a minute - data files (~50 MB) take time to download
-- **If changes not showing**: Streamlit Cloud auto-redeploys on every git push. Wait 2-5 minutes.
+- **If changes not showing**: 
+  1. Verify you pushed to `main` branch: `git branch` and `git push origin main`
+  2. Check Streamlit Cloud branch is set to `main` (not `master`)
+  3. Streamlit Cloud auto-redeploys on every git push. Wait 2-5 minutes.
+  4. Clear browser cache or use incognito mode
 
 ## That's It! 🎉
 

@@ -47,6 +47,7 @@ from data_loader import RainfallLoader, CropDataLoader
 from data_harmonization import StateDistrictMapper, TemporalHarmonizer
 from query_engine import QueryEngine
 import pandas as pd
+from typing import Any, Optional
 
 
 class RainfallCropAnalyzer:
@@ -67,6 +68,10 @@ class RainfallCropAnalyzer:
         print("Loading rainfall data...")
         self.rainfall_loader = RainfallLoader(nc_file_path)
         self.rainfall_loader.load()
+        
+        # Validate that lon and lat were loaded successfully
+        if self.rainfall_loader.lon is None or self.rainfall_loader.lat is None:
+            raise ValueError("Failed to load longitude or latitude data from NetCDF file")
         
         print("Loading crop data...")
         self.crop_loader = CropDataLoader(crop_file_path)
@@ -112,7 +117,7 @@ class RainfallCropAnalyzer:
     def __enter__(self):
         return self
     
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type: Optional[type[BaseException]], exc_val: Optional[BaseException], exc_tb: Any):
         self.close()
 
 

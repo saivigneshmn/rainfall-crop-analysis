@@ -21,9 +21,9 @@ class RainfallLoader:
         """
         self.nc_file_path = nc_file_path
         self.dataset: Optional[Any] = None
-        self.rainfall_data: Optional[Any] = None
-        self.lon: Optional[Any] = None
-        self.lat: Optional[Any] = None
+        self.rainfall_data: Optional[np.ndarray] = None
+        self.lon: Optional[np.ndarray] = None
+        self.lat: Optional[np.ndarray] = None
         self.time: Optional[Any] = None
         self.time_dates: Optional[Any] = None  # Converted dates from time variable
         self.years: List[int] = []  # Extracted years
