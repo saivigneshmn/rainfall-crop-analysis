@@ -10,9 +10,12 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
+
 from main import RainfallCropAnalyzer, format_query_result
 from nl_query_parser import NLQueryParser
-import os
 
 # Page config
 st.set_page_config(
@@ -31,8 +34,9 @@ if 'analyzer' not in st.session_state:
 
 def load_data() -> bool:
     """Load data into session state"""
-    nc_file = "data/RF25_ind2022_rfp25.nc"
-    crop_file = "data/horizontal_crop_vertical_year_report.xls"
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    nc_file = os.path.join(base_dir, "data", "RF25_ind2022_rfp25.nc")
+    crop_file = os.path.join(base_dir, "data", "horizontal_crop_vertical_year_report.xls")
     
     if not os.path.exists(nc_file):
         st.error(f"NetCDF file not found at {nc_file}")
