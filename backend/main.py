@@ -74,28 +74,60 @@ class RainfallCropAnalyzer:
 
 
 def dataframe_to_markdown(df: pd.DataFrame, index: bool = False) -> str:
-    """Convert DataFrame to markdown table with fallback if tabulate is not available"""
-    # Always use simple fallback for now since tabulate detection is unreliable
-    # Fallback: simple markdown table
-    lines = []
-    # Header
-    cols = df.columns.tolist()
-    if index:
-        cols = [''] + cols
-    lines.append('| ' + ' | '.join(cols) + ' |')
-    # Separator
-    lines.append('| ' + ' | '.join(['---'] * len(cols)) + ' |')
-    # Rows
-    for idx, row in df.iterrows():
-        values = [str(v) for v in row.values]
+    """
+    Convert DataFrame to markdown table format.
+    This is a custom implementation that doesn't require tabulate.
+    
+    Args:
+        df: pandas DataFrame to convert
+        index: Whether to include index column
+        
+    Returns:
+        Markdown-formatted string table
+    """
+    if df is None or df.empty:
+        return "*(No data available)*"
+    
+    try:
+        lines = []
+        # Header
+        cols = [str(col) for col in df.columns.tolist()]
         if index:
-            values = [str(idx)] + values
-        lines.append('| ' + ' | '.join(values) + ' |')
-    return '\n'.join(lines)
+            cols = [''] + cols
+        lines.append('| ' + ' | '.join(cols) + ' |')
+        # Separator
+        lines.append('| ' + ' | '.join(['---'] * len(cols)) + ' |')
+        # Rows
+        for idx, row in df.iterrows():
+            # Handle NaN values and convert all to strings
+            values = []
+            for val in row.values:
+                if pd.isna(val):
+                    values.append('N/A')
+                else:
+                    # Format numbers nicely
+                    if isinstance(val, (int, float)):
+                        if val == int(val):
+                            values.append(str(int(val)))
+                        else:
+                            values.append(f"{val:.2f}")
+                    else:
+                        values.append(str(val))
+            
+            if index:
+                values = [str(idx)] + values
+            lines.append('| ' + ' | '.join(values) + ' |')
+        return '\n'.join(lines)
+    except Exception as e:
+        # Fallback if anything goes wrong
+        return f"*(Error formatting table: {str(e)})*"
 
 
 def format_query_result(result: dict) -> str:
     """Format query result as markdown"""
+    if not isinstance(result, dict):
+        return f"**Error:** Invalid result format"
+    
     if 'error' in result:
         return f"**Error:** {result['error']}"
     
@@ -104,18 +136,27 @@ def format_query_result(result: dict) -> str:
     # Add title/header based on query type
     if 'comparison' in result:
         output.append("## Rainfall Comparison\n")
-        output.append(dataframe_to_markdown(result['comparison'], index=False))
+        if isinstance(result['comparison'], pd.DataFrame):
+            output.append(dataframe_to_markdown(result['comparison'], index=False))
+        else:
+            output.append("*(No comparison data available)*")
         output.append(f"\n*Years: {result.get('years', 'N/A')}*\n")
     elif 'top_crops' in result:
         output.append(f"## Top {result.get('top_n', 10)} Crops in {result.get('state', 'N/A')}\n")
-        output.append(dataframe_to_markdown(result['top_crops']))
+        if isinstance(result['top_crops'], pd.DataFrame):
+            output.append(dataframe_to_markdown(result['top_crops']))
+        else:
+            output.append("*(No crop data available)*")
         output.append(f"\n*Years: {result.get('years', 'N/A')}*\n")
     elif 'districts' in result:
         output.append(f"## Crop Production by District\n")
         output.append(f"**Crop:** {result.get('crop', 'N/A')}\n")
         output.append(f"**State:** {result.get('state', 'N/A')}\n")
         output.append(f"**Year:** {result.get('year', 'N/A')}\n\n")
-        output.append(dataframe_to_markdown(result['districts'], index=False))
+        if isinstance(result['districts'], pd.DataFrame):
+            output.append(dataframe_to_markdown(result['districts'], index=False))
+        else:
+            output.append("*(No district data available)*")
     elif 'trend_analysis' in result:
         output.append(f"## Crop Production Trend Analysis\n")
         output.append(f"**Crop:** {result.get('crop', 'N/A')}\n")
@@ -127,7 +168,10 @@ def format_query_result(result: dict) -> str:
             output.append(f"**R-squared:** {trend.get('r_squared', 0):.4f}\n")
             output.append(f"**P-value:** {trend.get('p_value', 0):.4f}\n\n")
             output.append("**Yearly Production Data:**\n")
-            output.append(dataframe_to_markdown(trend['yearly_data'], index=False))
+            if isinstance(trend.get('yearly_data'), pd.DataFrame):
+                output.append(dataframe_to_markdown(trend['yearly_data'], index=False))
+            else:
+                output.append("*(No yearly data available)*")
         else:
             output.append(f"**Error:** {trend.get('error', 'Unknown error')}\n")
     elif 'correlation' in result:
@@ -137,7 +181,10 @@ def format_query_result(result: dict) -> str:
         corr = result['correlation']
         output.append(f"**Average Rainfall:** {corr.get('average_rainfall_mm', 0):.2f} mm\n\n")
         output.append("**Production Data:**\n")
-        output.append(dataframe_to_markdown(corr['production_data'], index=False))
+        if isinstance(corr.get('production_data'), pd.DataFrame):
+            output.append(dataframe_to_markdown(corr['production_data'], index=False))
+        else:
+            output.append("*(No production data available)*")
         if 'note' in corr:
             output.append(f"\n*Note: {corr['note']}*\n")
     elif 'arguments' in result:
@@ -150,7 +197,10 @@ def format_query_result(result: dict) -> str:
             output.append(f"   - {arg['data']}\n")
             output.append(f"   - Metric: {arg['metric']}\n\n")
         output.append("### Comparison Table:\n")
-        output.append(dataframe_to_markdown(result['comparison'], index=False))
+        if isinstance(result.get('comparison'), pd.DataFrame):
+            output.append(dataframe_to_markdown(result['comparison'], index=False))
+        else:
+            output.append("*(No comparison data available)*")
         if 'note' in result:
             output.append(f"\n*{result['note']}*\n")
     elif 'average_rainfall' in result:
