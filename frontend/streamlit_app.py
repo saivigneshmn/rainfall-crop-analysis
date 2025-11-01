@@ -334,335 +334,81 @@ def show_nl_qa(analyzer: RainfallCropAnalyzer) -> None:
                     </div>
                     """, unsafe_allow_html=True)
     
-    # Example questions as clickable cards
-    st.markdown("### 💡 Challenge Questions & Examples")
-    st.markdown("**Project Samarth Challenge Questions** - Click on any example to try:")
+    # Example questions - Only 8 guaranteed working questions
+    st.markdown("### 💡 Project Samarth Challenge Questions")
+    st.markdown("**Click on any question to load it into the input box below:**")
     
-    # Comprehensive list of example questions covering all query types
+    # Only proven working questions
     examples = [
         # === CHALLENGE QUESTIONS (Original 4) ===
         {
             "icon": "🌧️🌾",
             "text": "Compare the average annual rainfall in Tamil Nadu and Karnataka for the last 2 available years. In parallel, list the top 5 most produced crops in Tamil Nadu and Karnataka during the same period, citing all data sources.",
-            "category": "Challenge Question 1: Multi-part Query"
+            "category": "Challenge Question 1"
         },
         {
             "icon": "📍",
-            "text": "Identify the district in Tamil Nadu with the highest production of Sugarcane in the most recent year available and compare that with the district with the lowest production of Sugarcane in west bengal",
-            "category": "Challenge Question 2: District Comparison"
+            "text": "Identify the district in Tamil Nadu with the highest production of Sugarcane in the most recent year available and compare that with the district with the lowest production of Sugarcane in West Bengal",
+            "category": "Challenge Question 2"
         },
         {
             "icon": "📈🌧️",
             "text": "Analyze the production trend of Sugarcane in Andhra Pradesh. Correlate this trend with the corresponding climate data for the same period and provide a summary of the apparent impact.",
-            "category": "Challenge Question 3: Trend & Correlation"
+            "category": "Challenge Question 3"
         },
         {
             "icon": "⚖️📊",
             "text": "A policy advisor is proposing a scheme to promote Sugarcane over Banana in Tamil Nadu. Based on historical data from the last 3 years, what are the three most compelling data-backed arguments to support this policy? Your answer must synthesize data from both climate and agricultural sources.",
-            "category": "Challenge Question 4: Policy Arguments"
+            "category": "Challenge Question 4"
         },
-        
-        # === SIMPLE QUERIES (Beginner-friendly) ===
         {
             "icon": "🌧️",
             "text": "What is the average annual rainfall in Maharashtra?",
-            "category": "Simple: Rainfall Query"
+            "category": "Simple Query"
         },
         {
             "icon": "🌾",
             "text": "List the top 10 most produced crops in Karnataka",
-            "category": "Simple: Top Crops"
+            "category": "Simple Query"
         },
         {
             "icon": "📍",
             "text": "Which district in Andhra Pradesh has the highest production of Coconut?",
-            "category": "Simple: District Production"
+            "category": "Simple Query"
         },
         {
             "icon": "📊",
             "text": "Compare rainfall between Kerala and Tamil Nadu",
-            "category": "Simple: Rainfall Comparison"
-        },
-        
-        # === VARIATIONS & EDGE CASES ===
-        {
-            "icon": "🔍",
-            "text": "What are the most produced crops in Gujarat for the year 2023?",
-            "category": "Variation: Year-specific Query"
-        },
-        {
-            "icon": "📍",
-            "text": "Find the district with the lowest production of Ginger in Assam",
-            "category": "Variation: Lowest Production"
-        },
-        {
-            "icon": "🌧️",
-            "text": "Compare average rainfall in Uttar Pradesh and Bihar for 2022",
-            "category": "Variation: Specific Year Comparison"
-        },
-        {
-            "icon": "🌾",
-            "text": "Show me the top 15 crops produced in Maharashtra during the last 2 years",
-            "category": "Variation: Multiple Years, More Crops"
-        },
-        
-        # === CROSS-STATE COMPARISONS ===
-        {
-            "icon": "🗺️",
-            "text": "Identify the district in Karnataka with the highest production of Turmeric and compare that with the district with the lowest production of Turmeric in Tamil Nadu",
-            "category": "Cross-State: Turmeric Comparison"
-        },
-        {
-            "icon": "🗺️",
-            "text": "Find the district in Kerala with the highest production of Coconut and compare that with the district with the lowest production of Coconut in Karnataka",
-            "category": "Cross-State: Coconut Comparison"
-        },
-        {
-            "icon": "🗺️",
-            "text": "Identify the district in Maharashtra with the highest production of Cotton and compare that with the district with the lowest production of Cotton in Gujarat",
-            "category": "Cross-State: Cotton Comparison"
-        },
-        
-        # === TREND ANALYSIS ===
-        {
-            "icon": "📈",
-            "text": "Analyze the production trend of Banana in Tamil Nadu over the last decade",
-            "category": "Trend: Banana Production"
-        },
-        {
-            "icon": "📈",
-            "text": "What is the production trend of Turmeric in Karnataka?",
-            "category": "Trend: Turmeric Analysis"
-        },
-        {
-            "icon": "📈",
-            "text": "Analyze the production trend of Cotton in Gujarat",
-            "category": "Trend: Cotton Analysis"
-        },
-        
-        # === CORRELATION QUERIES ===
-        {
-            "icon": "🔗",
-            "text": "Correlate the production of Sugarcane in Uttar Pradesh with rainfall data",
-            "category": "Correlation: Sugarcane & Rainfall"
-        },
-        {
-            "icon": "🔗",
-            "text": "What is the relationship between Banana production and climate data in Kerala?",
-            "category": "Correlation: Banana & Climate"
-        },
-        {
-            "icon": "🔗",
-            "text": "Analyze how Coconut production in Tamil Nadu correlates with rainfall patterns",
-            "category": "Correlation: Coconut & Rainfall"
-        },
-        
-        # === POLICY & COMPARISON QUERIES ===
-        {
-            "icon": "⚖️",
-            "text": "A policy maker wants to promote Cotton over Sugarcane in Maharashtra. Based on the last 3 years of data, what are three data-backed arguments?",
-            "category": "Policy: Cotton vs Sugarcane"
-        },
-        {
-            "icon": "⚖️",
-            "text": "Compare Banana and Coconut production in Kerala and provide arguments for promoting one over the other",
-            "category": "Policy: Banana vs Coconut"
-        },
-        {
-            "icon": "⚖️",
-            "text": "Give me arguments for promoting Turmeric over Ginger in Karnataka based on historical production data",
-            "category": "Policy: Turmeric vs Ginger"
-        },
-        
-        # === COMPLEX MULTI-PART QUERIES ===
-        {
-            "icon": "🌧️🌾📊",
-            "text": "Compare rainfall in Kerala, Tamil Nadu, and Karnataka. Also show the top 3 crops in each state for 2022",
-            "category": "Complex: Multi-state Rainfall & Crops"
-        },
-        {
-            "icon": "📈📍",
-            "text": "Analyze the trend of Sugarcane production in Maharashtra and identify the top 5 districts producing it in 2023",
-            "category": "Complex: Trend + District Analysis"
-        },
-        {
-            "icon": "🔗🌾",
-            "text": "Correlate Cotton production in Gujarat with rainfall data and list the top producing districts",
-            "category": "Complex: Correlation + Districts"
-        },
-        
-        # === REAL-WORLD SCENARIOS ===
-        {
-            "icon": "🏭",
-            "text": "A food processing company wants to set up a Sugarcane processing unit. Which state should they choose - Tamil Nadu or Karnataka? Provide data-backed recommendations.",
-            "category": "Real-world: Business Decision"
-        },
-        {
-            "icon": "🌾",
-            "text": "For agricultural planning, compare the top 5 crops in Andhra Pradesh and Telangana and their production trends",
-            "category": "Real-world: Agricultural Planning"
-        },
-        {
-            "icon": "📊",
-            "text": "A researcher needs to understand rainfall patterns. Compare average annual rainfall across Maharashtra, Karnataka, and Tamil Nadu for available years",
-            "category": "Real-world: Research Query"
-        },
-        
-        # === EDGE CASES & VARIATIONS ===
-        {
-            "icon": "❓",
-            "text": "What is the highest production district for Ginger in the most recent year available?",
-            "category": "Edge Case: Implicit State"
-        },
-        {
-            "icon": "❓",
-            "text": "List top crops in West Bengal and compare with top crops in Odisha",
-            "category": "Edge Case: Multiple Comparisons"
-        },
-        {
-            "icon": "❓",
-            "text": "Show me the production trend of Tobacco and correlate it with climate data in Andhra Pradesh",
-            "category": "Edge Case: Combined Trend & Correlation"
+            "category": "Simple Query"
         }
     ]
     
-    # Display examples with categories
-    st.markdown("#### 🎯 Project Samarth Challenge Questions")
-    challenge_examples = [e for e in examples if "Challenge Question" in e["category"]]
-    cols1 = st.columns(2)
-    for idx, example in enumerate(challenge_examples):
-        with cols1[idx % 2]:
+    # Display all 8 examples in a grid
+    cols = st.columns(2)
+    for idx, example in enumerate(examples):
+        with cols[idx % 2]:
             if st.button(
-                f"{example['icon']} {example['text']}",
-                key=f"challenge_{idx}",
+                f"{example['icon']} **{example['category']}**\n\n{example['text'][:120]}...",
+                key=f"example_{idx}",
                 use_container_width=True,
-                help=example['category']
+                help=example['text']
             ):
-                st.session_state.selected_example = example['text']
-                st.rerun()
-    
-    # Collapsible sections for other categories
-    with st.expander("📚 Simple Queries (Beginner-friendly)", expanded=False):
-        simple_examples = [e for e in examples if e["category"].startswith("Simple:")]
-        cols2 = st.columns(2)
-        for idx, example in enumerate(simple_examples):
-            with cols2[idx % 2]:
-                if st.button(
-                    f"{example['icon']} {example['text']}",
-                    key=f"simple_{idx}",
-                    use_container_width=True,
-                    help=example['category']
-                ):
-                    st.session_state.selected_example = example['text']
-                    st.rerun()
-    
-    with st.expander("🔄 Variations & Edge Cases", expanded=False):
-        var_examples = [e for e in examples if e["category"].startswith(("Variation:", "Edge Case:"))]
-        cols3 = st.columns(2)
-        for idx, example in enumerate(var_examples):
-            with cols3[idx % 2]:
-                if st.button(
-                    f"{example['icon']} {example['text']}",
-                    key=f"var_{idx}",
-                    use_container_width=True,
-                    help=example['category']
-                ):
-                    st.session_state.selected_example = example['text']
-                    st.rerun()
-    
-    with st.expander("🗺️ Cross-State Comparisons", expanded=False):
-        cross_examples = [e for e in examples if e["category"].startswith("Cross-State:")]
-        for idx, example in enumerate(cross_examples):
-            if st.button(
-                f"{example['icon']} {example['text']}",
-                key=f"cross_{idx}",
-                use_container_width=True,
-                help=example['category']
-            ):
-                st.session_state.selected_example = example['text']
-                st.rerun()
-    
-    with st.expander("📈 Trend Analysis Queries", expanded=False):
-        trend_examples = [e for e in examples if e["category"].startswith("Trend:")]
-        cols5 = st.columns(2)
-        for idx, example in enumerate(trend_examples):
-            with cols5[idx % 2]:
-                if st.button(
-                    f"{example['icon']} {example['text']}",
-                    key=f"trend_{idx}",
-                    use_container_width=True,
-                    help=example['category']
-                ):
-                    st.session_state.selected_example = example['text']
-                    st.rerun()
-    
-    with st.expander("🔗 Correlation Queries", expanded=False):
-        corr_examples = [e for e in examples if e["category"].startswith("Correlation:")]
-        cols6 = st.columns(2)
-        for idx, example in enumerate(corr_examples):
-            with cols6[idx % 2]:
-                if st.button(
-                    f"{example['icon']} {example['text']}",
-                    key=f"corr_{idx}",
-                    use_container_width=True,
-                    help=example['category']
-                ):
-                    st.session_state.selected_example = example['text']
-                    st.rerun()
-    
-    with st.expander("⚖️ Policy & Comparison Queries", expanded=False):
-        policy_examples = [e for e in examples if e["category"].startswith("Policy:")]
-        for idx, example in enumerate(policy_examples):
-            if st.button(
-                f"{example['icon']} {example['text']}",
-                key=f"policy_{idx}",
-                use_container_width=True,
-                help=example['category']
-            ):
-                st.session_state.selected_example = example['text']
-                st.rerun()
-    
-    with st.expander("🌐 Complex Multi-part Queries", expanded=False):
-        complex_examples = [e for e in examples if e["category"].startswith("Complex:")]
-        for idx, example in enumerate(complex_examples):
-            if st.button(
-                f"{example['icon']} {example['text']}",
-                key=f"complex_{idx}",
-                use_container_width=True,
-                help=example['category']
-            ):
-                st.session_state.selected_example = example['text']
-                st.rerun()
-    
-    with st.expander("🏢 Real-world Scenarios", expanded=False):
-        real_examples = [e for e in examples if e["category"].startswith("Real-world:")]
-        for idx, example in enumerate(real_examples):
-            if st.button(
-                f"{example['icon']} {example['text']}",
-                key=f"real_{idx}",
-                use_container_width=True,
-                help=example['category']
-            ):
-                st.session_state.selected_example = example['text']
+                st.session_state.question_input = example['text']
                 st.rerun()
     
     # Question input with better styling
     st.markdown("### ✍️ Ask Your Question")
     
-    # Handle example selection - if user clicked an example, populate it
-    if st.session_state.selected_example:
-        # When an example is selected, set it in session state
-        st.session_state.question_input = st.session_state.selected_example
-        # Clear the selected example flag
-        st.session_state.selected_example = None
+    # Get question from session state (set by button clicks)
+    # Clear it after using so it doesn't persist
+    default_question = st.session_state.get('question_input', '')
     
-    # Create text area - widget will maintain its own state via key
-    # Only set value if we explicitly set question_input above
+    # Create text area - use key that syncs with session state
     question = st.text_area(
         "Enter your question:",
-        value=st.session_state.get('question_input', ''),
+        value=default_question if default_question else "",
         height=120,
-        placeholder="Type your question here...\n\nExample: Compare the average annual rainfall in State_X and State_Y for the last N available years. In parallel, list the top M most produced crops in each state...",
+        placeholder="Type your question here or click a question above to load it...",
         label_visibility="collapsed",
         key="question_input"
     )
@@ -677,7 +423,6 @@ def show_nl_qa(analyzer: RainfallCropAnalyzer) -> None:
         help_button = st.button("❓ Help", use_container_width=True)
     
     if clear_button:
-        st.session_state.selected_example = None
         st.session_state.question_input = ""
         st.rerun()
     
@@ -711,29 +456,15 @@ def show_nl_qa(analyzer: RainfallCropAnalyzer) -> None:
         # 2. st.session_state[key] (st.session_state.question_input)
         # Both should be the same, but let's prioritize session_state as it's more reliable
         
-        # Try multiple sources to get the question
-        current_question = None
-        
-        # First try: session state (most reliable for widgets with keys)
-        if 'question_input' in st.session_state:
-            current_question = st.session_state.question_input
-        
-        # Second try: the question variable returned by the widget
-        if (not current_question or not str(current_question).strip()) and question:
-            current_question = question
-        
-        # Convert to string and clean
-        if current_question:
-            current_question = str(current_question).strip()
+        # Get question from text area or session state
+        if question and question.strip():
+            current_question = question.strip()
+        elif st.session_state.get('question_input'):
+            current_question = str(st.session_state.question_input).strip()
         else:
-            current_question = ""
-        
-        # Validate
-        if not current_question:
             st.warning("⚠️ Please enter a question before submitting")
             return
         
-        # Use the validated question
         question = current_question
         
         # Add to chat history
