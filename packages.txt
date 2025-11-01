@@ -1,0 +1,8 @@
+# Streamlit Cloud uses packages.txt for system dependencies
+# This file is optional - requirements.txt usually covers Python packages
+
+# If you need system-level packages, add them here:
+# For example:
+# libgdal-dev
+# gdal-bin
+

@@ -1,0 +1,5 @@
+# This file ensures the data directory is tracked by Git
+# Data files in this directory are required for the application to function:
+# - RF25_ind2022_rfp25.nc (~48.5 MB) - Rainfall NetCDF data
+# - horizontal_crop_vertical_year_report.xls (~1.75 MB) - Crop production data
+

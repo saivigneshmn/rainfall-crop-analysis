@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Data files - INCLUDED in repository (required for deployment)
+# These files are within GitHub's 100MB limit (~50MB total)
+# ✅ DO NOT IGNORE - Required for app to function
+# If you need to exclude large data files in the future, uncomment below:
+# data/*.nc
+# data/*.xls
+
